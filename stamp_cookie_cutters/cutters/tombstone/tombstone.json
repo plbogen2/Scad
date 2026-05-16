@@ -1,0 +1,9 @@
+{
+    "fileFormatVersion": "1",
+    "parameterSets": {
+        "New set 1": {
+            "cut_pattern": "simple_dala_horse.svg",
+            "cutter_height": "1"
+        }
+    }
+}
