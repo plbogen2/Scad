@@ -1,0 +1,92 @@
+name: Export Models
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.scad'
+      - '**.svg'
+      - '**.ps1'
+      - '.github/workflows/export.yml'
+  workflow_dispatch:
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 1. DISCOVER: find every subdirectory that contains an export.ps1
+  # ---------------------------------------------------------------------------
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.find.outputs.matrix }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Find projects with export.ps1
+        id: find
+        run: |
+          # Build a JSON array of subdir names that have an export.ps1
+          dirs=$(find . -maxdepth 2 -name "export.ps1" \
+                   ! -path './.github/*' \
+                   -printf '%h\n' | sed 's|^\./||' | sort)
+          json=$(printf '%s\n' $dirs | jq -R . | jq -sc .)
+          echo "matrix={\"project\":$json}" >> "$GITHUB_OUTPUT"
+          echo "Discovered: $json"
+
+  # ---------------------------------------------------------------------------
+  # 2. EXPORT: one job per discovered project (parallel)
+  # ---------------------------------------------------------------------------
+  export:
+    needs: discover
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false          # Let other projects finish even if one fails
+      matrix: ${{ fromJson(needs.discover.outputs.matrix) }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Install OpenSCAD (Nightly)
+        run: |
+          wget -qO- https://files.openscad.org/OBS-Repository-Key.pub \
+            | sudo tee /etc/apt/trusted.gpg.d/obs-openscad-nightly.asc
+          echo "deb https://download.opensuse.org/repositories/home:/t-paul/xUbuntu_24.04/ ./" \
+            | sudo tee /etc/apt/sources.list.d/openscad.list
+          sudo apt-get update
+          sudo apt-get install -y openscad-nightly
+          sudo ln -s /usr/bin/openscad-nightly /usr/local/bin/openscad
+
+      - name: Run export.ps1 – ${{ matrix.project }}
+        shell: pwsh
+        run: ./${{ matrix.project }}/export.ps1 -RenderPng
+
+      - name: Upload STLs – ${{ matrix.project }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.project }}-STLs
+          path: ${{ matrix.project }}/STLs/*.stl
+          if-no-files-found: warn
+
+      - name: Upload PNGs – ${{ matrix.project }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.project }}-PNGs
+          path: ${{ matrix.project }}/PNGs/*.png
+          if-no-files-found: warn
+
+      # Commit generated files back. Each parallel job only touches its own dir.
+      # CRITICAL: -f bypasses .gitignore; files land in LFS via .gitattributes
+      - name: Commit Generated Files – ${{ matrix.project }}
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git pull --rebase   # stay current with other parallel jobs
+          git add -f ${{ matrix.project }}/STLs/ ${{ matrix.project }}/PNGs/
+          git diff --quiet && git diff --staged --quiet || \
+            git commit -m "chore: auto-generate ${{ matrix.project }} [skip ci]"
+          git push

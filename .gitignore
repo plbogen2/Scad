@@ -1,2 +1,7 @@
 library/*
+
+# Export script outputs
 *.stl
+*.png
+STLs/
+PNGs/
