@@ -52,10 +52,12 @@ difference() {
 
 
     // 4. Center Array: Downward-Angled Cooling Louvers (Vent Fins)
-    // Clamped to y=25 — screw holes sit at y=±35 and the rotated louver
-    // geometry extends ~±4mm beyond its centre, so y=35 causes interference.
+    // Centred at x=0 (spanning x=-35 to +35):
+    //   - Clears the power slot right edge at x=-41 (6mm gap)
+    //   - Clears the screw holes at x=±67 (32mm gap)
+    //   - Clamped to y=25 to avoid screw holes at y=±35
     for (y = [-15 : 10 : 25]) {
-        translate([-35, y, 0]) 
+        translate([0, y, 0])
             rotate([-35, 0, 0]) // Angles the blade down to block debris
             cube([70, 4, plate_t * 3], center=true);
     }
