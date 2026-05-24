@@ -50,14 +50,15 @@ difference() {
 
 
     // 4. Center Array: Downward-Angled Cooling Louvers (Vent Fins)
-    // Centred at x=0 (spanning x=-35 to +35):
-    //   - Clears the power slot right edge at x=-41 (6mm gap)
-    //   - Clears the screw holes at x=±67 (32mm gap)
-    //   - Clamped to y=25 to avoid screw holes at y=±35
-    for (y = [-15 : 10 : 25]) {
-        translate([0, y, 0])
-            rotate([-35, 0, 0]) // Angles the blade down to block debris
-            cube([70, 4, plate_t * 3], center=true);
+    // Shifted right: centre x=+10, width 90mm → spans x=-35 to x=+55
+    //   Left:  power cable hole right edge at x=-46 → 11mm clearance
+    //   Right: screw holes at x=+67 (r=1.75) → 10mm clearance from hole edge
+    // Y range ±25, pitch 8mm → 7 louvers.
+    //   Louver edges reach ±29mm; screw holes are at ±35mm (6mm margin).
+    for (y = [-25 : 8 : 25]) {
+        translate([10, y, 0])
+            rotate([-35, 0, 0])
+            cube([90, 4, plate_t * 3], center=true);
     }
 }
 
