@@ -5,7 +5,7 @@ A parametric, printable cover plate that blanks off the ATX power supply opening
 ## Features
 
 - **Standard ATX footprint** — 150 × 86 mm, matches the ATX specification exactly
-- **Four M3 mounting holes** — asymmetric ATX pattern (134 mm × 70 mm spacing), M3 clearance
+- **Four M3 mounting holes** — asymmetric ATX pattern (134 mm × 70 mm spacing), with a flat-head countersink so screw heads sit flush with the plate surface
 - **AC main power cord slot** — slotted opening with a rounded top on the left side for your IEC cable or hardwired AC lead
 - **Zip-tie strain relief anchor** — integrated loop block right next to the power cord slot; thread a standard zip-tie through to lock the cable down
 - **Angled cooling louvers** — six 70 mm vent fins across the center, angled at 35° to block falling debris while still allowing airflow
@@ -36,8 +36,10 @@ Open `thing-o-matic-atx-plate.scad` in OpenSCAD. All dimensions are exposed as v
 | `hole_dist_y` | 70.0 mm | Vertical hole spacing |
 | `hole_r` | 1.75 mm | Screw hole radius (M3 clearance) |
 | `power_cable_d` | 14.0 mm | AC cable slot width |
+| `countersink_r` | 3.0 mm | Flat-head countersink radius (6 mm head) |
+| `countersink_d` | 2.0 mm | Countersink depth |
 
 ## Hardware
 
-- 4× M3 screws (length depends on your enclosure wall thickness)
+- 4× M3 **flat-head** screws (length depends on your enclosure wall thickness)
 - 1× standard zip-tie for the strain relief anchor
