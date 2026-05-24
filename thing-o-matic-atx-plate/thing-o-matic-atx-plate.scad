@@ -16,8 +16,8 @@ hole_r      = 1.75;  // 3.5mm diameter for M3 clearance screws
 
 // --- Custom Feature Settings ---
 power_cable_d = 14.0; // Main AC power cable slot width
-usb_w         = 14.0; // USB cable cutout width
-usb_h         = 8.0;  // USB cable cutout height
+port_w        = 14.0; // Smoothieboard port panel cutout width
+port_h        = 8.0;  // Smoothieboard port panel cutout height
 
 // ====================================================================
 // MAIN GEOMETRY GENERATION
@@ -41,9 +41,11 @@ difference() {
             cylinder(r=power_cable_d/2, h=plate_t+2);
     }
 
-    // 4. Right Side: Smoothieboard USB Logic Pass-Through
+    // 4. Right Side: Smoothieboard Port Panel Cutout
+    // (USB, SD card, and other ports exit through the opposite face of the board;
+    //  this slot gives clearance for cables plugged into that port row)
     translate([plate_w/2 - 25, -plate_h/2, -1])
-        cube([usb_w, usb_h + 10, plate_t+2]);
+        cube([port_w, port_h + 10, plate_t+2]);
 
     // 5. Center Array: Downward-Angled Cooling Louvers (Vent Fins)
     // Generates a grid of 6 safely angled cooling slots
