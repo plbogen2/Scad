@@ -67,8 +67,9 @@ difference() {
 // ====================================================================
 
 // Internal Zip-Tie Anchor Loop for the AC Main Power Cord
-// Positioned right next to the power cable entry slot
-translate([-plate_w/2 + 20 + (power_cable_d * 1.5), -plate_h/2 + 15, 0]) {
+// Centred horizontally over the cable entry hole, 3mm above the hole's top edge.
+// Zip-tie threads through the Y-direction slot and loops down around the cable.
+translate([-plate_w/2 + 20 + power_cable_d/2 - 6, -plate_h/2 + 28, 0]) {
     difference() {
         // Outer anchor block
         cube([12, 6, 8]);
