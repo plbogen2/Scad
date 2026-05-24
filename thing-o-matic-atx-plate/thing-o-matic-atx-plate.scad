@@ -43,12 +43,10 @@ difference() {
     translate([-hole_dist_x/2,  hole_dist_y/2, -1]) mounting_hole();
     translate([ hole_dist_x/2,  hole_dist_y/2, -1]) mounting_hole();
 
-    // 3. Left Side: AC Power Cord Slot
-    translate([-plate_w/2 + 20, -plate_h/2, -1]) {
-        cube([power_cable_d, 25, plate_t+2]);
-        translate([power_cable_d/2, 25, 0]) 
-            cylinder(r=power_cable_d/2, h=plate_t+2);
-    }
+    // 3. Left Side: AC Power Cable Entry Hole
+    // Simple round hole — cable is fed through before terminating the wires.
+    translate([-plate_w/2 + 20 + power_cable_d/2, -plate_h/2 + 20, -1])
+        cylinder(r=power_cable_d/2, h=plate_t+2);
 
 
     // 4. Center Array: Downward-Angled Cooling Louvers (Vent Fins)
