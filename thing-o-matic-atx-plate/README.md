@@ -35,7 +35,7 @@ Open `thing-o-matic-atx-plate.scad` in OpenSCAD. All dimensions are exposed as v
 | `hole_dist_x` | 134.0 mm | Horizontal hole spacing |
 | `hole_dist_y` | 70.0 mm | Vertical hole spacing |
 | `hole_r` | 1.75 mm | Screw hole radius (M3 clearance) |
-| `power_cable_d` | 14.0 mm | AC cable slot width |
+| `power_cable_d` | 9.0 mm | AC cable slot width (sized for 16 AWG 3-conductor, ~8 mm OD) |
 | `countersink_r` | 3.0 mm | Flat-head countersink radius (6 mm head) |
 | `countersink_d` | 2.0 mm | Countersink depth |
 

@@ -15,7 +15,7 @@ hole_dist_y = 70.0;  // Distance between top and bottom holes
 hole_r      = 1.75;  // 3.5mm diameter for M3 clearance screws
 
 // --- Custom Feature Settings ---
-power_cable_d = 14.0; // Main AC power cable slot width
+power_cable_d = 9.0; // 16 AWG 3-conductor cable (~8mm OD) + 1mm clearance
 
 // --- Countersink (M3 flat-head) ---
 countersink_r = 3.0;  // M3 flat-head radius (6mm head diameter)
